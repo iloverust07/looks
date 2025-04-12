@@ -1,0 +1,2442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Web App Capability -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Superman Method">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/svgs/solid/bolt.svg">
+<link rel="manifest" href="manifest.json" crossorigin="use-credentials">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Superman Method - Premium Access</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --dark-main: #1e1f22;
+      --dark-secondary: #2b2d31;
+      --dark-tertiary: #313338;
+      --dark-accent: #404249;
+      --light-text: #f2f3f5;
+      --gray-text: #949ba4;
+      --channel-text: #949ba4;
+      --channel-text-hover: #dbdee1;
+      --blurple: #5865f2;
+      --blurple-hover: #4752c4;
+      --green: #23a559;
+      --green-hover: #1e9150;
+      --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--dark-main);
+      color: var(--light-text);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .login-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .login-panel {
+      background: var(--dark-secondary);
+      padding: 2.5rem;
+      border-radius: 8px;
+      width: 100%;
+      box-shadow: var(--card-shadow);
+      text-align: center;
+      position: relative;
+    }
+    
+    .method-logo {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 1.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--light-text);
+      background: linear-gradient(135deg, #5865f2, #4752c4);
+    }
+    
+    .login-heading {
+      margin-bottom: 1.5rem;
+      color: var(--light-text);
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+    
+    .login-subheading {
+      color: var(--gray-text);
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    
+    .input-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    
+    input[type="password"] {
+      width: 100%;
+      padding: 0.875rem 1rem 0.875rem 2.5rem;
+      border-radius: 4px;
+      border: none;
+      font-size: 1rem;
+      background: var(--dark-main);
+      transition: all 0.3s;
+      color: var(--light-text);
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    input[type="password"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--blurple);
+    }
+    
+    .input-icon {
+      position: absolute;
+      left: 0.875rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-text);
+    }
+    
+    button.unlock-btn {
+      background: var(--blurple);
+      color: var(--light-text);
+      border: none;
+      padding: 0.875rem 1.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    button.unlock-btn:hover {
+      background: var(--blurple-hover);
+    }
+    
+    .error-msg {
+      color: #ed4245;
+      display: none;
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+    }
+    
+    .success-msg {
+      color: var(--green);
+      display: none;
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+    }
+    
+    /* Main Discord-like interface */
+    #content {
+      display: none;
+      height: 100vh;
+      overflow: hidden;
+    }
+    
+    .discord-layout {
+      display: flex;
+      height: 100vh;
+    }
+    
+    .servers-sidebar {
+      width: 72px;
+      background: var(--dark-main);
+      height: 100%;
+      padding: 12px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    
+    .server-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--dark-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--light-text);
+      position: relative;
+      font-size: 1.5rem;
+    }
+    
+    .server-icon.active {
+      border-radius: 16px;
+      background: var(--blurple);
+    }
+    
+    .server-icon.active:before {
+      content: '';
+      position: absolute;
+      left: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 40%;
+      background: var(--light-text);
+      border-radius: 0 4px 4px 0;
+    }
+    
+    .server-icon:hover:not(.active) {
+      border-radius: 16px;
+      background: var(--blurple);
+    }
+
+    .server-divider {
+      width: 32px;
+      height: 2px;
+      background: var(--dark-accent);
+      margin: 8px 0;
+    }
+    
+    .channels-sidebar {
+      width: 240px;
+      background: var(--dark-secondary);
+      height: 100%;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    
+    .server-header {
+      padding: 16px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-bottom: 1px solid var(--dark-accent);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .server-header-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .channels-heading {
+      padding: 16px 8px 8px 16px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--gray-text);
+      display: flex;
+      align-items: center;
+    }
+    
+    .channels-heading i {
+      margin-right: 4px;
+      font-size: 0.875rem;
+    }
+    
+    .channel-list {
+      list-style: none;
+    }
+    
+    .channel {
+      padding: 6px 8px 6px 20px;
+      margin: 0 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      font-size: 0.9375rem;
+      color: var(--channel-text);
+      transition: all 0.2s;
+    }
+    
+    .channel:hover {
+      background: var(--dark-accent);
+      color: var(--channel-text-hover);
+    }
+    
+    .channel.active {
+      background: var(--dark-accent);
+      color: var(--light-text);
+    }
+    
+    .channel i {
+      margin-right: 6px;
+      font-size: 1.125rem;
+    }
+    
+    .main-content {
+      flex: 1;
+      background: var(--dark-tertiary);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    
+    .channel-header {
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-bottom: 1px solid var(--dark-accent);
+      display: flex;
+      align-items: center;
+    }
+    
+    .channel-header i {
+      margin-right: 8px;
+      font-size: 1.25rem;
+      color: var(--gray-text);
+    }
+
+    .channel-header-info {
+      margin-left: 8px;
+    }
+
+    .channel-header-title {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .channel-header-description {
+      font-size: 0.8125rem;
+      color: var(--gray-text);
+      font-weight: 400;
+    }
+    
+    .method-content {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+    }
+    
+    .method {
+      display: none; /* Hide all method content by default */
+    }
+    
+    .method.active {
+      display: block; /* Show only active method */
+    }
+    
+    .method-header {
+      margin-bottom: 24px;
+    }
+    
+    .method-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--light-text);
+    }
+    
+    .method-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--gray-text);
+      margin-bottom: 24px;
+    }
+    
+    .method-section {
+      background: var(--dark-secondary);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .section-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--light-text);
+    }
+    
+    .section-content {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--gray-text);
+    }
+    
+    .method-list {
+      list-style: none;
+      margin: 16px 0;
+    }
+    
+    .method-list-item {
+      padding: 8px 0;
+      padding-left: 24px;
+      position: relative;
+      line-height: 1.6;
+    }
+    
+    .method-list-item:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--blurple);
+    }
+    
+    .method-image {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 8px;
+      margin: 16px 0;
+      display: block;
+    }
+    
+    .method-tag {
+      display: inline-block;
+      background: rgba(88, 101, 242, 0.15);
+      color: var(--blurple);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+    
+    .method-dosage {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--gray-text);
+      margin-top: 4px;
+      margin-bottom: 12px;
+    }
+    
+    .highlight {
+      color: var(--blurple);
+      font-weight: 500;
+    }
+    
+    /* Welcome screen */
+    .welcome-screen {
+      text-align: center;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    
+    .welcome-header {
+      margin-bottom: 2rem;
+    }
+    
+    .welcome-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    .welcome-subtitle {
+      font-size: 1.25rem;
+      color: var(--gray-text);
+      margin-bottom: 2rem;
+    }
+    
+    .welcome-channels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    
+    .welcome-channel-card {
+      background: var(--dark-secondary);
+      border-radius: 8px;
+      padding: 16px;
+      width: 200px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .welcome-channel-card:hover {
+      transform: translateY(-4px);
+      background: var(--dark-accent);
+    }
+    
+    .welcome-channel-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      color: var(--blurple);
+    }
+    
+    .welcome-channel-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .welcome-channel-description {
+      font-size: 0.875rem;
+      color: var(--gray-text);
+    }
+    
+    .welcome-footer {
+      color: var(--gray-text);
+      font-size: 0.875rem;
+    }
+    
+    /* Mobile responsive */
+    @media (max-width: 992px) {
+      .discord-layout {
+        flex-direction: column;
+        height: auto;
+      }
+      
+      .servers-sidebar {
+        width: 100%;
+        height: auto;
+        padding: 12px;
+        flex-direction: row;
+        overflow-x: auto;
+      }
+      
+      .server-icon {
+        margin-right: 8px;
+        margin-bottom: 0;
+      }
+      
+      .server-divider {
+        width: 2px;
+        height: 32px;
+        margin: 0 8px;
+      }
+      
+      .channels-sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+      }
+      
+      .main-content {
+        height: calc(100vh - 72px - 200px);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .login-panel {
+        padding: 1.5rem;
+      }
+      
+      .method-title {
+        font-size: 1.5rem;
+      }
+      
+      .welcome-channel-card {
+        width: 140px;
+      }
+    }
+
+    /* AI Chat Styles */
+.ai-badge {
+  background: linear-gradient(135deg, #5865f2, #4752c4);
+  color: var(--light-text);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.ai-chat-container {
+  background: var(--dark-secondary);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 250px);
+  overflow: hidden;
+}
+
+.ai-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.ai-message {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.ai-message-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--dark-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.ai-message-avatar i {
+  color: var(--blurple);
+}
+
+.ai-message.ai-user .ai-message-avatar {
+  background: var(--blurple);
+}
+
+.ai-message.ai-user .ai-message-avatar i {
+  color: var(--light-text);
+}
+
+.ai-message-content {
+  flex: 1;
+}
+
+.ai-message-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.ai-message-name {
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.ai-message-time {
+  color: var(--gray-text);
+  font-size: 0.75rem;
+  margin-left: 8px;
+}
+
+.ai-message-text {
+  color: var(--light-text);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.ai-message-text code {
+  background: var(--dark-main);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.875rem;
+}
+
+.ai-message-text pre {
+  background: var(--dark-main);
+  padding: 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.875rem;
+  overflow-x: auto;
+  margin: 8px 0;
+}
+
+.ai-chat-input {
+  padding: 16px;
+  border-top: 1px solid var(--dark-accent);
+}
+
+.ai-chat-input-container {
+  display: flex;
+  position: relative;
+}
+
+.ai-chat-input input {
+  flex: 1;
+  background: var(--dark-tertiary);
+  border: none;
+  padding: 12px 12px 12px 12px;
+  border-radius: 8px;
+  color: var(--light-text);
+  font-size: 0.9375rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.ai-chat-input input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--blurple);
+}
+
+.ai-chat-emoji-button {
+  position: absolute;
+  right: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--gray-text);
+  transition: all 0.2s;
+}
+
+.ai-chat-emoji-button:hover {
+  color: var(--light-text);
+}
+
+.ai-chat-input button {
+  background: var(--blurple);
+  color: var(--light-text);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-chat-input button:hover {
+  background: var(--blurple-hover);
+}
+
+.ai-chat-input-limit {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--gray-text);
+}
+
+/* Emoji picker */
+.emoji-picker {
+  display: none;
+  position: absolute;
+  right: 50px;
+  bottom: 50px;
+  background: var(--dark-secondary);
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: var(--card-shadow);
+  z-index: 100;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+  width: 320px;
+}
+
+.emoji-picker.active {
+  display: grid;
+}
+
+.emoji-item {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  font-size: 1.25rem;
+}
+
+.emoji-item:hover {
+  background: var(--dark-accent);
+}
+
+/* Typing indicator */
+.typing-indicator {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  color: var(--gray-text);
+  font-size: 0.875rem;
+}
+
+.typing-indicator span {
+  display: flex;
+  margin-left: 8px;
+}
+
+.typing-indicator .dot {
+  width: 4px;
+  height: 4px;
+  background: var(--gray-text);
+  border-radius: 50%;
+  margin: 0 2px;
+  display: inline-block;
+  animation: typing 1.5s infinite;
+}
+
+.typing-indicator .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-4px);
+  }
+}
+
+/* More Mobile Optimizations */
+@media (max-width: 768px) {
+  .ai-chat-container {
+    height: calc(100vh - 200px);
+  }
+  
+  .method-title {
+    font-size: 1.5rem;
+  }
+  
+  .ai-message {
+    margin-bottom: 12px;
+  }
+  
+  .ai-message-avatar {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+  }
+  
+  .ai-message-name {
+    font-size: 0.875rem;
+  }
+  
+  .ai-message-text {
+    font-size: 0.875rem;
+  }
+  
+  .emoji-picker {
+    width: 280px;
+    right: 10px;
+    bottom: 60px;
+  }
+  
+  .emoji-item {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ai-chat-container {
+    height: calc(100vh - 180px);
+  }
+  
+  .emoji-picker {
+    width: 240px;
+    grid-template-columns: repeat(6, 1fr);
+  }
+  
+  .ai-chat-input input {
+    padding: 10px;
+    font-size: 0.875rem;
+  }
+  
+  .ai-chat-emoji-button {
+    right: 45px;
+  }
+  
+  .ai-chat-input button {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Floating Tutorial Robot */
+/* Floating Tutorial Robot */
+.tutorial-robot {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: var(--blurple);
+  border-radius: 50%;
+  display: flex; /* Changed from 'none' to 'flex' to make it visible by default */
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  cursor: pointer;
+  animation: bounce 2s infinite;
+  transition: all 0.2s;
+}
+
+.tutorial-robot:hover {
+  transform: scale(1.1);
+  animation-play-state: paused;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+.tutorial-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.tutorial-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tutorial-content {
+  background: var(--dark-secondary);
+  border-radius: 8px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.tutorial-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.tutorial-icon {
+  width: 48px;
+  height: 48px;
+  background: var(--blurple);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  font-size: 1.5rem;
+}
+
+.tutorial-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.tutorial-steps {
+  margin-bottom: 24px;
+}
+
+.tutorial-step {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.tutorial-step-number {
+  width: 32px;
+  height: 32px;
+  background: var(--blurple);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.tutorial-step-content {
+  flex: 1;
+}
+
+.tutorial-step-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.tutorial-step-description {
+  color: var(--gray-text);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.tutorial-image {
+  width: 100%;
+  border-radius: 8px;
+  margin: 8px 0 16px;
+  border: 2px solid var(--dark-accent);
+}
+
+.tutorial-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.tutorial-button {
+  background: var(--dark-accent);
+  color: var(--light-text);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.tutorial-button.primary {
+  background: var(--blurple);
+}
+
+.tutorial-button:hover {
+  filter: brightness(1.1);
+}
+  </style>
+</head>
+<body>
+  <div class="login-container" id="loginContainer">
+    <div class="login-panel">
+      <div class="method-logo">SM</div>
+      <h1 class="login-heading">The Superman Method</h1>
+      <p class="login-subheading">Enter your access key to unlock the complete looksmaxxing protocol.</p>
+      
+      <div class="input-group">
+        <i class="input-icon fas fa-key"></i>
+        <input type="password" id="keyInput" placeholder="Enter your access key..." autocomplete="off">
+      </div>
+      
+      <button class="unlock-btn" id="unlockBtn">
+        <i class="fas fa-unlock"></i> Unlock Protocol
+      </button>
+      
+      <div id="errorMsg" class="error-msg">Invalid key. Please check your email for the correct access key.</div>
+      <div id="successMsg" class="success-msg">Success! Unlocking your protocol...</div>
+    </div>
+  </div>
+
+  <!-- Floating Tutorial Robot -->
+<div class="tutorial-robot" id="tutorialRobot">
+  <i class="fas fa-robot"></i>
+</div>
+
+<!-- Tutorial Overlay -->
+<div class="tutorial-overlay" id="tutorialOverlay">
+  <div class="tutorial-content">
+    <div class="tutorial-header">
+      <div class="tutorial-icon">
+        <i class="fas fa-mobile-alt"></i>
+      </div>
+      <div class="tutorial-title">Add to Home Screen</div>
+    </div>
+    
+    <div class="tutorial-steps">
+      <div class="tutorial-step">
+        <div class="tutorial-step-number">1</div>
+        <div class="tutorial-step-content">
+          <div class="tutorial-step-title" id="tutorialStep1Title">Tap Share</div>
+          <div class="tutorial-step-description" id="tutorialStep1Description">
+            On iOS, tap the share icon at the bottom of your browser.
+            On Android, tap the three dots menu at the top right.
+          </div>
+        </div>
+      </div>
+      
+      <div class="tutorial-step">
+        <div class="tutorial-step-number">2</div>
+        <div class="tutorial-step-content">
+          <div class="tutorial-step-title" id="tutorialStep2Title">Add to Home Screen</div>
+          <div class="tutorial-step-description" id="tutorialStep2Description">
+            Find and tap "Add to Home Screen" or "Install App" option.
+          </div>
+        </div>
+      </div>
+      
+      <div class="tutorial-step">
+        <div class="tutorial-step-number">3</div>
+        <div class="tutorial-step-content">
+          <div class="tutorial-step-title">Enjoy the App</div>
+          <div class="tutorial-step-description">
+            The Superman Method will appear on your home screen just like a native app!
+            Your login will be remembered for future sessions.
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="tutorial-buttons">
+      <button class="tutorial-button" id="dismissTutorial">Dismiss</button>
+      <button class="tutorial-button primary" id="gotItTutorial">Got it!</button>
+    </div>
+  </div>
+</div>
+
+  <div id="content">
+    <div class="discord-layout">
+      <!-- Server sidebar (left) -->
+      <div class="servers-sidebar">
+        <div class="server-icon active" data-target="superman-server">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <div class="server-divider"></div>
+        <div class="server-icon">
+          <i class="fas fa-plus"></i>
+        </div>
+      </div>
+      
+      <!-- Channels sidebar (middle) -->
+      <div class="channels-sidebar">
+        <div class="server-header">
+          <div class="server-header-name">The Superman Method</div>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        
+        <div class="channels-heading">
+          <i class="fas fa-chevron-down"></i> PROTOCOL CHANNELS
+        </div>
+        
+        <ul class="channel-list">
+          <li class="channel active" data-channel="welcome">
+            <i class="fas fa-hashtag"></i> welcome
+          </li>
+          <li class="channel" data-channel="hollow-cheeks">
+            <i class="fas fa-hashtag"></i> hollow-cheeks
+          </li>
+          <li class="channel" data-channel="hormones">
+            <i class="fas fa-hashtag"></i> hormones
+          </li>
+          <li class="channel" data-channel="facial-structure">
+            <i class="fas fa-hashtag"></i> facial-structure
+          </li>
+          <li class="channel" data-channel="height">
+            <i class="fas fa-hashtag"></i> height
+          </li>
+          <li class="channel" data-channel="frame">
+            <i class="fas fa-hashtag"></i> frame
+          </li>
+          <li class="channel" data-channel="lymphatic">
+            <i class="fas fa-hashtag"></i> lymphatic
+          </li>
+          <li class="channel" data-channel="skin-health">
+            <i class="fas fa-hashtag"></i> skin-health
+          </li>
+          <li class="channel" data-channel="skin-tone">
+            <i class="fas fa-hashtag"></i> skin-tone
+          </li>
+          <li class="channel" data-channel="eye-bags">
+            <i class="fas fa-hashtag"></i> eye-bags
+          </li>
+          <li class="channel" data-channel="muscle">
+            <i class="fas fa-hashtag"></i> muscle
+          </li>
+          <li class="channel" data-channel="superfoods">
+            <i class="fas fa-hashtag"></i> superfoods
+          </li>
+          <li class="channel" data-channel="superman-ai">
+            <i class="fas fa-robot"></i> superman-ai
+          </li>
+        </ul>
+        
+        <div class="channels-heading">
+          <i class="fas fa-chevron-down"></i> RESOURCES
+        </div>
+        
+        <ul class="channel-list">
+          <li class="channel" data-channel="results">
+            <i class="fas fa-hashtag"></i> results
+          </li>
+          <li class="channel" data-channel="faq">
+            <i class="fas fa-hashtag"></i> faq
+          </li>
+          <li class="channel" data-channel="support">
+            <i class="fas fa-hashtag"></i> support
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Main content area (right) -->
+      <div class="main-content">
+        <!-- Channel header -->
+        <div class="channel-header">
+          <i class="fas fa-hashtag"></i>
+          <div class="channel-header-info">
+            <div class="channel-header-title" id="currentChannelTitle">welcome</div>
+            <div class="channel-header-description" id="currentChannelDescription">Welcome to The Superman Method</div>
+          </div>
+        </div>
+        
+        <!-- Method content area -->
+        <div class="method-content">
+          <!-- Welcome channel content -->
+          <div class="method active" id="welcome">
+            <div class="welcome-screen">
+              <div class="welcome-header">
+                <h1 class="welcome-title">Welcome to The Superman Method</h1>
+                <p class="welcome-subtitle">Your complete natural looksmaxxing protocol</p>
+              </div>
+              
+              <div class="welcome-channels">
+                <div class="welcome-channel-card" data-channel="hollow-cheeks">
+                  <div class="welcome-channel-icon">
+                    <i class="fas fa-snowflake"></i>
+                  </div>
+                  <div class="welcome-channel-title">Hollow Cheeks</div>
+                  <div class="welcome-channel-description">Ice technique</div>
+                </div>
+                
+                <div class="welcome-channel-card" data-channel="hormones">
+                  <div class="welcome-channel-icon">
+                    <i class="fas fa-bolt"></i>
+                  </div>
+                  <div class="welcome-channel-title">Hormones</div>
+                  <div class="welcome-channel-description">Optimization system</div>
+                </div>
+                
+                <div class="welcome-channel-card" data-channel="facial-structure">
+                  <div class="welcome-channel-icon">
+                    <i class="fas fa-face-smile"></i>
+                  </div>
+                  <div class="welcome-channel-title">Facial Structure</div>
+                  <div class="welcome-channel-description">Enhancement techniques</div>
+                </div>
+                
+                <div class="welcome-channel-card" data-channel="height">
+                  <div class="welcome-channel-icon">
+                    <i class="fas fa-arrow-up"></i>
+                  </div>
+                  <div class="welcome-channel-title">Height</div>
+                  <div class="welcome-channel-description">Maximization protocol</div>
+                </div>
+              </div>
+              
+              <p class="welcome-footer">Click on any channel in the sidebar to explore the full protocol</p>
+            </div>
+          </div>
+          
+          <!-- Hollow Cheeks channel -->
+          <div class="method" id="hollow-cheeks">
+            <div class="method-header">
+              <h2 class="method-title">Hollow Cheeks (Ice Technique)</h2>
+              <p class="method-description">The cold-exposure facial sculpting technique that creates defined cheekbones and the coveted hollow cheek look.</p>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">The Science</h3>
+              <div class="section-content">
+                <p>Rubbing ice on the inside of the cheeks can stimulate vasoconstriction and increase local fat metabolism. While not a magic fix, cold exposure may improve cheek definition over time. This mimics some effects of buccal fat reduction in a safer, non-invasive way.</p>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Protocol</h3>
+              <div class="section-content">
+                <p>Rub an ice cube on the inner cheek lining for 3–5 minutes, once or twice daily.</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Use a clean ice cube (made from filtered water)</li>
+                  <li class="method-list-item">Focus on the middle and lower part of the inner cheek</li>
+                  <li class="method-list-item">Apply gentle pressure as you move the ice in circular motions</li>
+                  <li class="method-list-item">Perform for 3-5 minutes per side, once or twice daily</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Enhanced Protocol</h3>
+              <div class="section-content">
+                <p>For accelerated results, combine the ice method with:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Gua sha facial massage to improve lymphatic drainage</li>
+                  <li class="method-list-item">Reduced sodium intake to minimize water retention</li>
+                  <li class="method-list-item">Chewing exercises to develop the masseter muscles</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Hormones channel -->
+          <div class="method" id="hormones">
+            <div class="method-header">
+              <h2 class="method-title">Hormones & Growth Optimization</h2>
+              <p class="method-description">Boosting testosterone and growth hormone naturally requires a foundation of proper nutrition, rest, and exercise.</p>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Optimized Nutrition Protocol</h3>
+              <div class="section-content">
+                <ul class="method-list">
+                  <li class="method-list-item"><span class="highlight">Protein:</span> Aim for 100g/day, focusing on meat, eggs, and dairy.</li>
+                  <li class="method-list-item"><span class="highlight">Carbs & Sugars:</span> Include simple sugars (e.g. fruits, raw honey) post-workout to spike insulin and raise IGF-1.</li>
+                  <li class="method-list-item"><span class="highlight">Milk:</span> Rich in calcium and casein protein, supports muscle and bone health.</li>
+                </ul>
+                <p>Note: A moderate approach of 100–150g of carbs spread through the day, paired with physical training, will promote IGF-1 safely.</p>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Cortisol Management</h3>
+              <div class="section-content">
+                <p>High cortisol is linked to insulin resistance and can inhibit testosterone production. Manage stress with:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Proper sleep (7-9 hours in a dark room)</li>
+                  <li class="method-list-item">Morning light exposure (15-30 minutes)</li>
+                  <li class="method-list-item">Adaptogens like ashwagandha (300-600mg daily)</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Training for Hormonal Response</h3>
+              <div class="section-content">
+                <p>Certain exercise protocols maximize natural testosterone and growth hormone production:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Compound lifts (squats, deadlifts, bench press)</li>
+                  <li class="method-list-item">Sprint intervals (30 seconds on, 90 seconds rest)</li>
+                  <li class="method-list-item">Training in a fasted state occasionally</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Facial Structure channel -->
+          <div class="method" id="facial-structure">
+            <div class="method-header">
+              <h2 class="method-title">Facial Structure Enhancement</h2>
+              <p class="method-description">Evidence-supported methods for facial definition that reshape and enhance your natural facial structure.</p>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Mewing Technique</h3>
+              <div class="section-content">
+                <p>Proper tongue posture improves facial definition over time by reshaping the maxilla and midface.</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Keep the entire tongue pressed to the roof of your mouth</li>
+                  <li class="method-list-item">Maintain lips sealed and breathe through your nose</li>
+                  <li class="method-list-item">Practice proper swallowing (without using cheek muscles)</li>
+                  <li class="method-list-item">Maintain this position as much as possible, especially while sleeping</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Hard Chewing</h3>
+              <div class="section-content">
+                <p>Use mastic gum or raw vegetables to strengthen the masseter muscles and create a wider jaw appearance.</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Chew mastic gum for 15-30 minutes daily</li>
+                  <li class="method-list-item">Focus on using the back molars</li>
+                  <li class="method-list-item">Alternate sides to ensure balanced development</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Neck and Posture Training</h3>
+              <div class="section-content">
+                <p>Chin tucks, neck bridges, and posture correction enhance your overall facial appearance by creating proper alignment.</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Perform 3 sets of 10 chin tucks daily</li>
+                  <li class="method-list-item">Practice good posture with shoulders back and head aligned</li>
+                  <li class="method-list-item">Sleep on your back without a pillow or with a thin one</li>
+                </ul>
+                <p>Bonus: Gua sha or facial massages help with lymphatic drainage and circulation, contributing to tighter, fresher-looking skin.</p>
+              </div>
+
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Neck and Posture Training</h3>
+              <div class="section-content">
+                <p>Chin tucks, neck bridges, and posture correction enhance your overall facial appearance by creating proper alignment.</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Perform 3 sets of 10 chin tucks daily</li>
+                  <li class="method-list-item">Practice good posture with shoulders back and head aligned</li>
+                  <li class="method-list-item">Sleep on your back without a pillow or with a thin one</li>
+                </ul>
+                <p>Bonus: Gua sha or facial massages help with lymphatic drainage and circulation, contributing to tighter, fresher-looking skin.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Height channel -->
+          <div class="method" id="height">
+            <div class="method-header">
+              <h2 class="method-title">Height Maximization Protocol</h2>
+              <p class="method-description">Our advanced height enhancement techniques can add noticeable inches to your perceived and actual height.</p>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Spinal Decompression</h3>
+              <div class="section-content">
+                <p>The spine naturally compresses throughout the day. These techniques can help you regain and maximize your full height:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Hanging exercises: Hang from a pull-up bar for 30-60 seconds, 3-5 sets daily</li>
+                  <li class="method-list-item">Inversion table: Use for 5-10 minutes daily to reverse spinal compression</li>
+                  <li class="method-list-item">Child's pose stretch: Hold for 1-2 minutes before bed</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Growth Stimulation</h3>
+              <div class="section-content">
+                <p>While most height increase occurs during puberty, these methods may help late bloomers and support maximum height expression:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Deep sleep optimization (7-9 hours in complete darkness)</li>
+                  <li class="method-list-item">Sprint training to increase growth hormone production</li>
+                  <li class="method-list-item">Zinc supplementation (15-30mg daily with food)</li>
+                  <li class="method-list-item">Vitamin D3 (2000-5000 IU daily) with K2 (100mcg)</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Postural Enhancement</h3>
+              <div class="section-content">
+                <p>Proper posture can instantly add 1-2 inches to your perceived height:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Wall exercises: Stand against wall with heels, buttocks, shoulders and head touching</li>
+                  <li class="method-list-item">Strengthen core muscles with planks and hollow holds</li>
+                  <li class="method-list-item">Stretch hip flexors daily to prevent anterior pelvic tilt</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Frame channel -->
+          <div class="method" id="frame">
+            <div class="method-header">
+              <h2 class="method-title">Frame & Shoulder Development</h2>
+              <p class="method-description">Widening your frame naturally requires smart training and volume to create an impressive V-taper.</p>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Key Exercises</h3>
+              <div class="section-content">
+                <ul class="method-list">
+                  <li class="method-list-item"><span class="highlight">Lateral Raises:</span> 3–5 sets, 10-15 reps, 3–4 times per week</li>
+                  <li class="method-list-item"><span class="highlight">Wide Grip Pull-ups:</span> 3-4 sets to near failure, 2-3 times weekly</li>
+                  <li class="method-list-item"><span class="highlight">Face Pulls:</span> 3 sets of 15-20 reps, focus on external rotation</li>
+                  <li class="method-list-item"><span class="highlight">Rear Delt Flies:</span> 3 sets of 12-15 reps with light to moderate weight</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Postural Realignment</h3>
+              <div class="section-content">
+                <p>Include these exercises to open the chest and reset rounded shoulders:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Thoracic extensions over a foam roller</li>
+                  <li class="method-list-item">Doorway stretches for chest and anterior delts</li>
+                  <li class="method-list-item">Band pull-aparts, 3 sets of 20 reps daily</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Advanced Techniques</h3>
+              <div class="section-content">
+                <p>For maximum frame development, incorporate these strategies:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Progressive overload: Increase weight or reps consistently</li>
+                  <li class="method-list-item">Mind-muscle connection: Focus intensely on the targeted muscles</li>
+                  <li class="method-list-item">Time under tension: Use slower negatives (3-4 seconds down)</li>
+                  <li class="method-list-item">Adequate recovery: 48 hours between training the same muscle groups</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Add the rest of your method channels here following the same pattern -->
+
+          <!-- Lymphatic channel -->
+          <div class="method" id="lymphatic">
+            <div class="method-header">
+              <h2 class="method-title">Lymphatic Drainage & Facial Health</h2>
+              <p class="method-description">NASA-researched rebounding techniques to improve lymphatic flow, reduce puffiness and support detoxification.</p>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Rebounding Protocol</h3>
+              <div class="section-content">
+                <p>NASA found that rebounding (jumping up and down) improves lymphatic flow more effectively than other forms of exercise:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Try 5–10 minutes of trampoline or light jump rope per day</li>
+                  <li class="method-list-item">Start with 2-minute sessions if you're a beginner, working up to 10 minutes</li>
+                  <li class="method-list-item">For best results, perform in the morning on an empty stomach</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Facial Lymphatic Massage</h3>
+              <div class="section-content">
+                <p>Complement rebounding with these targeted massage techniques:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Use a gua sha stone to stroke upward and outward from the center of the face</li>
+                  <li class="method-list-item">Focus on jaw, cheekbones, and under-eye area</li>
+                  <li class="method-list-item">Perform for 3-5 minutes daily after applying facial oil</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Hydration Strategy</h3>
+              <div class="section-content">
+                <p>Proper hydration is essential for lymphatic health:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Drink 3-4 liters of clean water daily</li>
+                  <li class="method-list-item">Consider adding electrolytes to maximize cellular hydration</li>
+                  <li class="method-list-item">Reduce salt intake to minimize water retention</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skin Health channel -->
+          <div class="method" id="skin-health">
+            <div class="method-header">
+              <h2 class="method-title">Skin Health</h2>
+              <p class="method-description">Clear, glowing skin starts from within with these nutrition, supplement and topical strategies.</p>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Dietary Protocol</h3>
+              <div class="section-content">
+                <ul class="method-list">
+                  <li class="method-list-item"><span class="highlight">Eliminate:</span> Seed oils, excessive sugar, processed foods</li>
+                  <li class="method-list-item"><span class="highlight">Add:</span> Zinc-rich foods (oysters, beef, pumpkin seeds)</li>
+                  <li class="method-list-item"><span class="highlight">Increase:</span> Omega-3 fatty acids from wild-caught fish</li>
+                  <li class="method-list-item"><span class="highlight">Hydration:</span> 3-4 liters of clean water daily</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Supplement Stack</h3>
+              <div class="section-content">
+                <ul class="method-list">
+                  <li class="method-list-item">Collagen peptides: 10-20g daily for skin structure and elasticity</li>
+                  <li class="method-list-item">Vitamin A (from food sources): liver, eggs, butter</li>
+                  <li class="method-list-item">Ashwagandha: 300-600mg daily to lower cortisol and reduce stress-related breakouts</li>
+                  <li class="method-list-item">Zinc: 15-30mg daily with food for acne reduction</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Topical Treatments</h3>
+              <div class="section-content">
+                <p>Start with these gentle, effective treatments:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Niacinamide serum (5-10%) for brightness and oil control</li>
+                  <li class="method-list-item">Salicylic acid (2%) for acne-prone skin</li>
+                  <li class="method-list-item">Vitamin C serum for antioxidant protection and brightness</li>
+                </ul>
+                <p>For severe acne, consult a dermatologist about Accutane, but only after trying natural methods.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- More channels to be added -->
+          
+          <!-- Skin Tone channel -->
+          <div class="method" id="skin-tone">
+            <div class="method-header">
+              <h2 class="method-title">Skin Color Optimization</h2>
+              <p class="method-description">Enhance skin tone and radiance with powerful antioxidant-rich compounds and circulation-boosting habits.</p>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Key Nutrients</h3>
+              <div class="section-content">
+                <ul class="method-list">
+                  <li class="method-list-item"><span class="method-tag">Lycopene</span> <span class="method-dosage">From tomatoes and watermelon - Adds a healthy rosy glow and protects against UV damage</span></li>
+                  <li class="method-list-item"><span class="method-tag">Astaxanthin</span> <span class="method-dosage">From krill oil and red algae - Take 4–12mg daily for enhanced skin hydration and glow</span></li>
+                  <li class="method-list-item"><span class="method-tag">MSM</span> <span class="method-dosage">2–4g daily to clear skin and reduce redness</span></li>
+                  <li class="method-list-item"><span class="method-tag">Resveratrol</span> <span class="method-dosage">From grapes and blueberries - Take 250–500mg daily for improved circulation and clarity</span></li>
+                  <li class="method-list-item"><span class="method-tag">Beta-Carotene</span> <span class="method-dosage">From carrots and sweet potatoes - 15–30mg daily (avoid overuse)</span></li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Lifestyle Enhancers</h3>
+              <div class="section-content">
+                <ul class="method-list">
+                  <li class="method-list-item">Cold showers for improved skin firmness and circulation</li>
+                  <li class="method-list-item">Daily brisk walks or short sprints to flush skin with blood</li>
+                  <li class="method-list-item">Eliminate seed oils and processed foods that cause inflammation</li>
+                  <li class="method-list-item">Use topical Vitamin C or Niacinamide for brightening</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Sun Strategy</h3>
+              <div class="section-content">
+                <p>Balanced sun exposure is key to healthy skin tone:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Short, regular sun exposure (15-20 minutes) before 10am or after 4pm</li>
+                  <li class="method-list-item">Always protect face with mineral sunscreen when in direct sun</li>
+                  <li class="method-list-item">Consider internal sun protection with astaxanthin supplementation</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Eye Bags channel -->
+          <div class="method" id="eye-bags">
+            <div class="method-header">
+              <h2 class="method-title">Eye Bag Removal</h2>
+              <p class="method-description">Eliminate eye bags and dark circles with these targeted nutrition, sleep and treatment protocols.</p>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Sleep Optimization</h3>
+              <div class="section-content">
+                <p>Quality sleep is foundational to eye appearance:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Go to bed before 11PM to maximize HGH release and tissue repair</li>
+                  <li class="method-list-item">Sleep in complete darkness (use blackout curtains if needed)</li>
+                  <li class="method-list-item">Elevate your head slightly to prevent fluid accumulation</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Mineral Balance</h3>
+              <div class="section-content">
+                <p>Too much salt + not enough potassium = facial puffiness. Improve this balance by:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Adding potassium-rich foods: bananas, potatoes, avocados</li>
+                  <li class="method-list-item">Reducing sodium intake (especially processed foods)</li>
+                  <li class="method-list-item">Staying properly hydrated to flush excess sodium</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Direct Treatments</h3>
+              <div class="section-content">
+                <ul class="method-list">
+                  <li class="method-list-item"><span class="highlight">Cold Therapy:</span> Place cold spoons or ice wrapped in cloth under eyes for 2–3 minutes in the morning</li>
+                  <li class="method-list-item"><span class="highlight">Caffeine Eye Cream:</span> Apply topically to constrict blood vessels and reduce puffiness</li>
+                  <li class="method-list-item"><span class="highlight">Facial Massage:</span> Use gentle pressure to stimulate lymphatic drainage around the eyes</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Supplements</h3>
+              <div class="section-content">
+                <ul class="method-list">
+                  <li class="method-list-item"><span class="method-tag">Vitamin K2</span> <span class="method-dosage">100-200mcg daily to improve blood flow and reduce dark circles</span></li>
+                  <li class="method-list-item"><span class="method-tag">Gotu Kola</span> <span class="method-dosage">500mg daily to enhance microcirculation and tighten skin</span></li>
+                  <li class="method-list-item"><span class="method-tag">Collagen Peptides</span> <span class="method-dosage">10-20g daily to rebuild tissue under the eye</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Muscle channel -->
+          <div class="method" id="muscle">
+            <div class="method-header">
+              <h2 class="method-title">Muscle Building Supplement Stack</h2>
+              <p class="method-description">Optimize muscle growth and density with this comprehensive natural supplement protocol.</p>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Core Supplements</h3>
+              <div class="section-content">
+                <ul class="method-list">
+                  <li class="method-list-item"><span class="method-tag">Creatine Monohydrate</span> <span class="method-dosage">5g daily to increase muscle volume, strength, and performance</span></li>
+                  <li class="method-list-item"><span class="method-tag">Whey Protein</span> <span class="method-dosage">25-50g post-workout for rapid recovery and amino acid delivery</span></li>
+                  <li class="method-list-item"><span class="method-tag">Collagen + Vitamin C</span> <span class="method-dosage">10-20g collagen with 250-500mg vitamin C to repair joints, skin, and connective tissue</span></li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Performance Enhancers</h3>
+              <div class="section-content">
+                <ul class="method-list">
+                  <li class="method-list-item"><span class="method-tag">L-Citrulline</span> <span class="method-dosage">6–8g pre-workout for improved blood flow and muscle pumps</span></li>
+                  <li class="method-list-item"><span class="method-tag">Beta-Alanine</span> <span class="method-dosage">3-5g daily for increased muscular endurance</span></li>
+                  <li class="method-list-item"><span class="method-tag">Essential Amino Acids (EAAs)</span> <span class="method-dosage">10-15g during training for muscle preservation</span></li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Hormonal Support</h3>
+              <div class="section-content">
+                <ul class="method-list">
+                  <li class="method-list-item"><span class="method-tag">Ashwagandha</span> <span class="method-dosage">600mg daily to reduce cortisol and support testosterone</span></li>
+                  <li class="method-list-item"><span class="method-tag">Tongkat Ali</span> <span class="method-dosage">200-400mg daily in cycles of 4–8 weeks as a natural androgen booster</span></li>
+                  <li class="method-list-item"><span class="method-tag">ZMA</span> <span class="method-dosage">Take before bed to support recovery, testosterone, and sleep quality</span></li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Training Enhancement</h3>
+              <div class="section-content">
+                <p>For maximum aesthetic muscle development:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Train fasted occasionally (for GH spike)</li>
+                  <li class="method-list-item">Use progressive overload to consistently challenge muscles</li>
+                  <li class="method-list-item">Focus on slow negatives (3-5 seconds) for enhanced muscle fiber development</li>
+                  <li class="method-list-item">Allow 48-72 hours recovery between training the same muscle groups</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Superfoods channel -->
+          <div class="method" id="superfoods">
+            <div class="method-header">
+              <h2 class="method-title">Superman Superfoods</h2>
+              <p class="method-description">Eat your way to elite aesthetics with these nutrient-dense foods that directly impact your skin, muscle, hormones, and facial development.</p>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Premium Animal Foods</h3>
+              <div class="section-content">
+                <ul class="method-list">
+                  <li class="method-list-item"><span class="highlight">Grass-Fed Beef:</span> Loaded with creatine, iron, B-vitamins, and complete protein. Supports muscle growth, bone density, and jaw development.</li>
+                  <li class="method-list-item"><span class="highlight">Lamb:</span> Rich in zinc, carnitine, healthy fats, and selenium. Lamb is a top-tier meat for aesthetics due to its unique fatty acid profile.</li>
+                  <li class="method-list-item"><span class="highlight">Pastured Eggs:</span> High in choline, cholesterol (for testosterone production), and biotin. Vital for skin, hair, brain health, and hormonal optimization.</li>
+                  <li class="method-list-item"><span class="highlight">Wild-Caught Salmon:</span> Full of omega-3s and astaxanthin — essential for skin glow, vascularity, and anti-inflammation.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Nutrient-Dense Staples</h3>
+              <div class="section-content">
+                <ul class="method-list">
+                  <li class="method-list-item"><span class="highlight">Whole Milk:</span> Rich in calcium, fats, and fat-soluble vitamins (A, D, K2). Essential for bone growth and skin softness.</li>
+                  <li class="method-list-item"><span class="highlight">Sweet Potatoes:</span> High in beta-carotene, which adds a warm tone to the skin and supports hormone balance.</li>
+                  <li class="method-list-item"><span class="highlight">Cooked Tomatoes:</span> Concentrated source of lycopene, which protects against UV damage and boosts natural skin color.</li>
+                  <li class="method-list-item"><span class="highlight">Blueberries / Dark Grapes:</span> Rich in resveratrol and anthocyanins. They improve circulation, brain function, and skin clarity.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Secret Weapons</h3>
+              <div class="section-content">
+                <ul class="method-list">
+                  <li class="method-list-item"><span class="highlight">Beef Liver:</span> One of the most nutrient-dense foods on earth. Supports skin, eyes, collagen production, and overall vitality.</li>
+                  <li class="method-list-item"><span class="highlight">Bone Broth / Gelatin:</span> Contains collagen, glycine, and minerals that rebuild facial structure, improve gut health, and tighten skin.</li>
+                  <li class="method-list-item"><span class="highlight">Garlic:</span> Increases nitric oxide, reduces cortisol, and supports testosterone. Also improves blood flow and skin vibrance.</li>
+                  <li class="method-list-item"><span class="highlight">Parsley:</span> Natural source of apigenin, which boosts testosterone. Helps reduce water retention and improves facial definition.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Results channel -->
+          <div class="method" id="results">
+            <div class="method-header">
+              <h2 class="method-title">Results & Transformations</h2>
+              <p class="method-description">Real success stories from men who have followed The Superman Method protocol.</p>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Success Timeline</h3>
+              <div class="section-content">
+                <p>Follow the complete Superman Method protocol for these timeframes to track your progress:</p>
+                <ul class="method-list">
+                  <li class="method-list-item"><span class="highlight">30 Days:</span> Initial changes in skin quality, facial water retention, and muscle fullness</li>
+                  <li class="method-list-item"><span class="highlight">60 Days:</span> Noticeable improvements in facial definition, posture, and physique</li>
+                  <li class="method-list-item"><span class="highlight">90 Days:</span> Significant transformation in overall appearance, confidence, and presence</li>
+                </ul>
+              </div>
+            </div>
+
+          
+            
+            <div class="method-section">
+              <h3 class="section-title">Transformation Stories</h3>
+              <div class="section-content">
+                <p>Add your own transformation photos and success stories here after implementing the protocol.</p>
+                <!-- Placeholder for user's transformation photos -->
+                <img src="/api/placeholder/600/400" alt="Transformation placeholder" class="method-image" id="transformationImage1">
+                <img src="/api/placeholder/600/400" alt="Transformation placeholder" class="method-image" id="transformationImage2">
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Track Your Progress</h3>
+              <div class="section-content">
+                <p>For best results, track these metrics monthly:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Take consistent photos in the same lighting and position</li>
+                  <li class="method-list-item">Measure key areas: face width, shoulder width, chest, waist</li>
+                  <li class="method-list-item">Note energy levels, skin quality, and confidence</li>
+                  <li class="method-list-item">Document which protocols have the biggest impact for you</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="method" id="superman-ai">
+            <div class="method-header">
+              <h2 class="method-title">
+                Superman AI <span class="ai-badge"><i class="fas fa-robot"></i> AI</span>
+              </h2>
+              <p class="method-description">Chat with our AI assistant about any aspect of the Superman Method.</p>
+            </div>
+            
+            <div class="ai-chat-container">
+              <div class="ai-chat-messages" id="aiChatMessages">
+                <div class="ai-message ai-assistant">
+                  <div class="ai-message-avatar">
+                    <i class="fas fa-robot"></i>
+                  </div>
+                  <div class="ai-message-content">
+                    <div class="ai-message-header">
+                      <span class="ai-message-name">Superman AI</span>
+                      <span class="ai-message-time">Today at 12:00 PM</span>
+                    </div>
+                    <div class="ai-message-text">
+                      Hey there! 👋 I'm your Superman Method AI assistant. How can I help you enhance your appearance today? Ask me about any protocol or technique!
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="ai-chat-input">
+                <div class="ai-chat-input-container">
+                  <input type="text" id="aiChatInput" placeholder="Ask Superman AI anything..." maxlength="500">
+                  <div class="ai-chat-emoji-button">
+                    <i class="fas fa-smile"></i>
+                  </div>
+                  <button id="aiChatSendBtn">
+                    <i class="fas fa-paper-plane"></i>
+                  </button>
+                </div>
+                <div class="ai-chat-input-limit">
+                  <span id="aiCharCount">0</span>/500
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ channel -->
+          <div class="method" id="faq">
+            <div class="method-header">
+              <h2 class="method-title">Frequently Asked Questions</h2>
+              <p class="method-description">Answers to common questions about The Superman Method protocol.</p>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">General Questions</h3>
+              <div class="section-content">
+                <p><strong>Q: How long until I see results?</strong></p>
+                <p>A: Most users notice initial changes within 30 days, with significant improvements by 90 days. Consistency is key.</p>
+                
+                <p><strong>Q: Do I need to follow all methods at once?</strong></p>
+                <p>A: Start with the methods that address your primary concerns, then gradually incorporate others. The protocols work synergistically but can be effective individually.</p>
+                
+                <p><strong>Q: Are these methods safe?</strong></p>
+                <p>A: All protocols are designed to be natural and non-invasive. However, consult with a healthcare professional before beginning any new supplement regimen, especially if you have existing health conditions.</p>
+              </div>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Protocol-Specific Questions</h3>
+              <div class="section-content">
+                <p><strong>Q: Is mewing effective for adults?</strong></p>
+                <p>A: While mewing has the most dramatic effects during developmental years, adults can still achieve noticeable improvements in facial structure and definition with consistent practice over time.</p>
+                
+                <p><strong>Q: How much can height really be increased?</strong></p>
+                <p>A: The height protocol can add 1-2 inches through postural improvement and spinal decompression. Some users may experience additional gains through growth plate stimulation depending on age and genetics.</p>
+                
+                <p><strong>Q: Which supplements are most important?</strong></p>
+                <p>A: If you need to prioritize, focus on: creatine monohydrate, whey protein, vitamin D3+K2, zinc, and collagen peptides. These provide the foundation for the other protocols.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Support channel -->
+          <div class="method" id="support">
+            <div class="method-header">
+              <h2 class="method-title">Support & Resources</h2>
+              <p class="method-description">Additional resources and support for your transformation journey.</p>
+            </div>
+            
+            <div class="method-section">
+              <h3 class="section-title">Contact Information</h3>
+              <div class="section-content">
+                <p>For questions, feedback, or support with The Superman Method:</p>
+                <ul class="method-list">
+                  <li class="method-list-item">Email: support@supermanmethod.com</li>
+
+
+
+                <script>
+
+
+
+                // AI Chat functionality
+function initAIChat() {
+  const chatInput = document.getElementById('aiChatInput');
+  const chatSendBtn = document.getElementById('aiChatSendBtn');
+  const chatMessages = document.getElementById('aiChatMessages');
+  const charCount = document.getElementById('aiCharCount');
+  const emojiButton = document.querySelector('.ai-chat-emoji-button');
+  
+  // Encode the OpenRouter API key
+  const encodedKey = btoa('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');
+  const apiKey = atob(encodedKey);
+  const model = 'nvidia/llama-3.1-nemotron-nano-8b-v1:free';
+  
+  // Common emojis
+  const commonEmojis = [
+    '😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '😊',
+    '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '😋', '😛',
+    '😜', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐',
+    '😑', '😶', '😏', '😒', '🙄', '😬', '🤥', '😌', '😔', '😪',
+    '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶',
+    '🥴', '😵', '🤯', '🥳', '😎', '🤓', '🧐', '👍', '👎', '❤️'
+  ];
+
+  // Create emoji picker
+  const emojiPicker = document.createElement('div');
+  emojiPicker.className = 'emoji-picker';
+  
+  // Add emojis to picker
+  commonEmojis.forEach(emoji => {
+    const emojiItem = document.createElement('div');
+    emojiItem.className = 'emoji-item';
+    emojiItem.textContent = emoji;
+    emojiItem.addEventListener('click', () => {
+      chatInput.value += emoji;
+      updateCharCount();
+      emojiPicker.classList.remove('active');
+    });
+    emojiPicker.appendChild(emojiItem);
+  });
+  
+  document.querySelector('.ai-chat-input').appendChild(emojiPicker);
+  
+  // Toggle emoji picker
+  emojiButton.addEventListener('click', () => {
+    emojiPicker.classList.toggle('active');
+  });
+  
+  // Close emoji picker when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!emojiButton.contains(e.target) && !emojiPicker.contains(e.target)) {
+      emojiPicker.classList.remove('active');
+    }
+  });
+
+  // Handle authentication persistence
+// Handle authentication persistence
+function saveAuthState() {
+  // Save to localStorage that user is authenticated
+  localStorage.setItem('supermanMethodAuth', 'true');
+  
+  // Check for "Add to Home Screen" eligibility
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isAndroid = /Android/.test(navigator.userAgent);
+  const isMobile = isIOS || isAndroid;
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+  
+  // Only show tutorial on mobile devices and not in standalone mode
+  if (isMobile && !isStandalone && !localStorage.getItem('tutorialShown')) {
+    showAddToHomeScreenTutorial();
+  }
+}
+
+// Check authentication on page load
+function checkAuthState() {
+  if (localStorage.getItem('supermanMethodAuth') === 'true') {
+    // Skip login screen
+    loginContainer.style.display = 'none';
+    content.style.display = 'block';
+  }
+}
+
+// Update the showContent function
+function showContent() {
+  // Show feedback
+  unlockBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Unlocking...';
+  successMsg.style.display = 'block';
+  
+  // Simple delay to simulate processing
+  setTimeout(function() {
+    // Hide login container and show content
+    loginContainer.style.display = 'none';
+    content.style.display = 'block';
+    
+    // Save authentication state
+    saveAuthState();
+  }, 1000);
+}
+  
+  // Character count
+  function updateCharCount() {
+    const currentLength = chatInput.value.length;
+    charCount.textContent = currentLength;
+    
+    if (currentLength >= 500) {
+      charCount.style.color = '#ed4245';
+    } else {
+      charCount.style.color = '';
+    }
+  }
+  
+  chatInput.addEventListener('input', updateCharCount);
+  
+  // Current timestamp
+  function getCurrentTime() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    
+    return `Today at ${formattedHours}:${formattedMinutes} ${ampm}`;
+  }
+  
+  // Add message to chat
+  function addMessage(text, isUser = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = isUser ? 'ai-message ai-user' : 'ai-message ai-assistant';
+    
+    messageDiv.innerHTML = `
+      <div class="ai-message-avatar">
+        <i class="${isUser ? 'fas fa-user' : 'fas fa-robot'}"></i>
+      </div>
+      <div class="ai-message-content">
+        <div class="ai-message-header">
+          <span class="ai-message-name">${isUser ? 'You' : 'Superman AI'}</span>
+          <span class="ai-message-time">${getCurrentTime()}</span>
+        </div>
+        <div class="ai-message-text">${formatMessage(text)}</div>
+      </div>
+    `;
+    
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+  
+  // Format message (handle markdown, emojis, etc)
+  function formatMessage(text) {
+    // Convert URLs to links
+    text = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+    
+    // Convert code blocks
+    text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+    
+    // Convert line breaks
+    text = text.replace(/\n/g, '<br>');
+    
+    return text;
+  }
+  
+  // Add typing indicator
+  function showTypingIndicator() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'typing-indicator';
+    typingDiv.id = 'typingIndicator';
+    typingDiv.innerHTML = `
+      <div class="ai-message-avatar">
+        <i class="fas fa-robot"></i>
+      </div>
+      <span>Superman AI is typing<div class="dot"></div><div class="dot"></div><div class="dot"></div></span>
+    `;
+    
+    chatMessages.appendChild(typingDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+  
+  // Remove typing indicator
+  function removeTypingIndicator() {
+    const typingIndicator = document.getElementById('typingIndicator');
+    if (typingIndicator) {
+      typingIndicator.remove();
+    }
+  }
+  
+  // Send message to OpenRouter AI
+  async function sendToAI(userMessage) {
+    showTypingIndicator();
+    
+    try {
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+          'HTTP-Referer': window.location.href,
+          'X-Title': 'Superman Method AI'
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: [
+            {
+              role: 'system', 
+              content: 'You are Superman AI, the AI assistant for The Superman Method - a natural looksmaxxing protocol. Keep responses encouraging, concise, and focused on helping users improve their appearance naturally. Provide advice consistent with the Superman Method channels: hollow cheeks, hormones, facial structure, height, frame, lymphatic, skin health, skin tone, eye bags, muscle, and superfoods. Your responses should be friendly, useful, and formatted nicely for a Discord-like chat interface. Include relevant emojis occasionally to keep the conversation engaging. Stay positive and supportive.'
+            },
+            { role: 'user', content: userMessage }
+          ]
+        })
+      });
+      
+      const data = await response.json();
+      removeTypingIndicator();
+      
+      if (data.choices && data.choices[0] && data.choices[0].message) {
+        addMessage(data.choices[0].message.content);
+      } else {
+        addMessage("Sorry, I couldn't process your request. Please try again later.");
+      }
+    } catch (error) {
+      removeTypingIndicator();
+      addMessage("Sorry, there was an error connecting to the AI. Please try again later.");
+      console.error('AI Error:', error);
+    }
+  }
+  
+  // Send message on button click
+  chatSendBtn.addEventListener('click', () => {
+    const message = chatInput.value.trim();
+    if (message) {
+      addMessage(message, true);
+      chatInput.value = '';
+      updateCharCount();
+      sendToAI(message);
+    }
+  });
+  
+  // Send message on Enter key
+  chatInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      chatSendBtn.click();
+    }
+  });
+}
+
+// Initialize AI chat when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+  // ... existing code ...
+  
+  // Initialize AI chat
+  initAIChat();
+});
+              </script>
+
+              <script>
+                // Add this script to the bottom of your HTML file, right before the closing </body> tag
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Get DOM elements
+  const unlockBtn = document.getElementById('unlockBtn');
+  const keyInput = document.getElementById('keyInput');
+  const errorMsg = document.getElementById('errorMsg');
+  const successMsg = document.getElementById('successMsg');
+  const loginContainer = document.getElementById('loginContainer');
+  const content = document.getElementById('content');
+  
+  // Add click event for the unlock button
+  unlockBtn.addEventListener('click', showContent);
+  
+  // Add keyboard event (Enter key)
+  keyInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      showContent();
+    }
+  });
+  
+  // Function to show content - no validation needed
+  function showContent() {
+    // Show feedback
+    unlockBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Unlocking...';
+    successMsg.style.display = 'block';
+    
+    // Simple delay to simulate processing
+    setTimeout(function() {
+      // Hide login container and show content
+      loginContainer.style.display = 'none';
+      content.style.display = 'block';
+    }, 1000);
+  }
+  
+  // Channel switching functionality
+  const channels = document.querySelectorAll('.channel');
+  const methods = document.querySelectorAll('.method');
+  const channelTitle = document.getElementById('currentChannelTitle');
+  const channelDescription = document.getElementById('currentChannelDescription');
+  
+  // Add click event to each channel
+  channels.forEach(function(channel) {
+    channel.addEventListener('click', function() {
+      // Get channel ID
+      const channelId = this.getAttribute('data-channel');
+      
+      // Update active state
+      channels.forEach(ch => ch.classList.remove('active'));
+      this.classList.add('active');
+      
+      // Hide all methods and show the selected one
+      methods.forEach(method => method.classList.remove('active'));
+      document.getElementById(channelId).classList.add('active');
+      
+      // Update channel header
+      channelTitle.textContent = channelId;
+      channelDescription.textContent = document.querySelector(`#${channelId} .method-description`).textContent;
+    });
+  });
+  
+  // Welcome channel card functionality
+  const welcomeCards = document.querySelectorAll('.welcome-channel-card');
+  
+  welcomeCards.forEach(function(card) {
+    card.addEventListener('click', function() {
+      const channelId = this.getAttribute('data-channel');
+      
+      // Find and click the corresponding channel
+      document.querySelector(`.channel[data-channel="${channelId}"]`).click();
+    });
+  });
+});
+
+
+              </script> 
+              <script>
+              (function() {
+                // Try to find the tutorial robot and overlay
+                const tutorialRobot = document.getElementById('tutorialRobot');
+                const tutorialOverlay = document.getElementById('tutorialOverlay');
+                
+                if (tutorialRobot && tutorialOverlay) {
+                  console.log('Tutorial elements found, attaching events');
+                  
+                  // Make sure the robot is visible
+                  tutorialRobot.style.display = 'flex';
+                  
+                  // Attach the click event directly
+                  tutorialRobot.onclick = function() {
+                    console.log('Robot clicked');
+                    tutorialOverlay.classList.add('active');
+                  };
+                  
+                  // Set up the dismiss and got it buttons
+                  const dismissButton = document.getElementById('dismissTutorial');
+                  const gotItButton = document.getElementById('gotItTutorial');
+                  
+                  if (dismissButton) {
+                    dismissButton.onclick = function() {
+                      tutorialOverlay.classList.remove('active');
+                    };
+                  }
+                  
+                  if (gotItButton) {
+                    gotItButton.onclick = function() {
+                      localStorage.setItem('tutorialShown', 'true');
+                      tutorialOverlay.classList.remove('active');
+                      tutorialRobot.style.display = 'none';
+                    };
+                  }
+                } else {
+                  console.error('Tutorial elements not found: Robot =', !!tutorialRobot, 'Overlay =', !!tutorialOverlay);
+                }
+              })();
+            </script>
+            
+
+<script>
+  // Tutorial functionality
+  function showAddToHomeScreenTutorial() {
+  const tutorialRobot = document.getElementById('tutorialRobot');
+  const tutorialOverlay = document.getElementById('tutorialOverlay');
+  const dismissTutorial = document.getElementById('dismissTutorial');
+  const gotItTutorial = document.getElementById('gotItTutorial');
+  const tutorialStep1Title = document.getElementById('tutorialStep1Title');
+  const tutorialStep1Description = document.getElementById('tutorialStep1Description');
+  const tutorialStep2Title = document.getElementById('tutorialStep2Title');
+  const tutorialStep2Description = document.getElementById('tutorialStep2Description');
+  
+  // Check if on mobile
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isAndroid = /Android/.test(navigator.userAgent);
+  const isMobile = isIOS || isAndroid;
+  
+  // Show the robot regardless of device type
+  tutorialRobot.style.display = 'flex';
+  
+  // Customize tutorial based on device
+  if (isMobile) {
+    if (isIOS) {
+      tutorialStep1Title.textContent = 'Tap Share';
+      tutorialStep1Description.textContent = 'Tap the share icon at the bottom of your browser.';
+      tutorialStep2Title.textContent = 'Add to Home Screen';
+      tutorialStep2Description.textContent = 'Scroll and tap "Add to Home Screen" option.';
+    } else {
+      tutorialStep1Title.textContent = 'Tap Menu';
+      tutorialStep1Description.textContent = 'Tap the three dots menu at the top right of your browser.';
+      tutorialStep2Title.textContent = 'Install App';
+      tutorialStep2Description.textContent = 'Tap "Install app" or "Add to Home Screen" option.';
+    }
+  } else {
+    // Desktop version of tutorial
+    tutorialStep1Title.textContent = 'Welcome to Superman Method!';
+    tutorialStep1Description.textContent = 'This site works best when installed as an app on your mobile device.';
+    tutorialStep2Title.textContent = 'Mobile Experience';
+    tutorialStep2Description.textContent = 'For the full experience, try visiting this site on your phone and adding it to your home screen.';
+  }
+  
+  // Open tutorial when robot is clicked
+  tutorialRobot.addEventListener('click', () => {
+    tutorialOverlay.classList.add('active');
+  });
+  
+  // Close tutorial
+  dismissTutorial.addEventListener('click', () => {
+    tutorialOverlay.classList.remove('active');
+  });
+  
+  // Mark tutorial as shown and close
+  gotItTutorial.addEventListener('click', () => {
+    localStorage.setItem('tutorialShown', 'true');
+    tutorialOverlay.classList.remove('active');
+    tutorialRobot.style.display = 'none';
+  });
+}
+
+// Update the DOMContentLoaded event handler
+document.addEventListener('DOMContentLoaded', function() {
+  // Get DOM elements
+  const unlockBtn = document.getElementById('unlockBtn');
+  const keyInput = document.getElementById('keyInput');
+  const errorMsg = document.getElementById('errorMsg');
+  const successMsg = document.getElementById('successMsg');
+  const loginContainer = document.getElementById('loginContainer');
+  const content = document.getElementById('content');
+  
+  // Add click event for the unlock button
+  unlockBtn.addEventListener('click', showContent);
+  
+  // Add keyboard event (Enter key)
+  keyInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      showContent();
+    }
+  });
+  
+  // Check auth state on load
+  checkAuthState();
+  
+  // Channel switching functionality
+  const channels = document.querySelectorAll('.channel');
+  const methods = document.querySelectorAll('.method');
+  const channelTitle = document.getElementById('currentChannelTitle');
+  const channelDescription = document.getElementById('currentChannelDescription');
+  
+  // Add click event to each channel
+  channels.forEach(function(channel) {
+    channel.addEventListener('click', function() {
+      // Get channel ID
+      const channelId = this.getAttribute('data-channel');
+      
+      // Update active state
+      channels.forEach(ch => ch.classList.remove('active'));
+      this.classList.add('active');
+      
+      // Hide all methods and show the selected one
+      methods.forEach(method => method.classList.remove('active'));
+      document.getElementById(channelId).classList.add('active');
+      
+      // Update channel header
+      channelTitle.textContent = channelId;
+      channelDescription.textContent = document.querySelector(`#${channelId} .method-description`).textContent;
+    });
+  });
+  
+  // Welcome channel card functionality
+  const welcomeCards = document.querySelectorAll('.welcome-channel-card');
+  
+  welcomeCards.forEach(function(card) {
+    card.addEventListener('click', function() {
+      const channelId = this.getAttribute('data-channel');
+      
+      // Find and click the corresponding channel
+      document.querySelector(`.channel[data-channel="${channelId}"]`).click();
+    });
+  });
+  
+  // Initialize AI chat
+  initAIChat();
+});
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').then(function(registration) {
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }, function(err) {
+      console.log('ServiceWorker registration failed: ', err);
+    });
+  });
+}
+</script>
+
+
+</div>  </div></div></div></div> </body>
